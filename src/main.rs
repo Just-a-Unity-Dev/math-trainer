@@ -62,11 +62,14 @@ fn main() {
     }
     let total_answers = v.len();
     let average_duration: u128 = session_start.elapsed().as_millis() / v.len() as u128;
+    let average_duration_correct: u128 = session_start.elapsed().as_millis() / correct as u128;
+
     let inner_message = match mistake {
-        0 => "perfect!".to_string(),
-        total_answers => format!("{} mistakes :( ", mistake),
+        0 => "perfect! :D".to_string(),
+        total_answers => format!("{} mistake(s) :( ", mistake),
         _ => format!("{} mistakes", mistake)
     };
     println!("score: {}/{}: {}", correct, v.len(), inner_message);
-    println!("avg {}ms/attempt, total {}s", average_duration, session_start.elapsed().as_secs());
+    println!("avg {}ms/correct attempt ({}ms/atmp)", average_duration_correct, average_duration);
+    println!("total {}s", session_start.elapsed().as_secs());
 }
