@@ -1,4 +1,4 @@
-use std::time::{Duration,SystemTime};
+use std::time::{Duration,Instant};
 use std::cmp::Ordering;
 use std::io::Write;
 use rand::Rng;
@@ -18,11 +18,12 @@ fn main() {
     let lower_limit = 1;
 
     let mut v: Vec<Duration> = Vec::new();
+    let session_start = Instant::now();
 
     loop {
         // new attempt
         // assign time started
-        let attempt_started = SystemTime::now();
+        let attempt_start = Instant::now();
 
         // assign left hand, right hand, and answer
         let left_hand = rng.gen_range(lower_limit..=upper_limit);
@@ -56,19 +57,10 @@ fn main() {
             Ordering::Equal => correct += 1,
             _ => mistake += 1
         }
-        match SystemTime::now().duration_since(attempt_started) {
-            Ok(duration) => v.push(duration),
-            Err(_) => break
-        }
+        // record attempt start
+        v.push(attempt_start.elapsed());
     }
-
-    let mut average_duration: u32 = 0;
-    for attempt_duration in v.iter() {
-        average_duration += attempt_duration.as_millis() as u32;
-    }
-    average_duration = average_duration / v.len() as u32;
-
-    let total = correct + mistake;
-    println!("score: {}/{}", correct, total);
-    println!("average attempt lasted {} ms", average_duration);
+    let average_duration: u128 = session_start.elapsed().as_millis() / v.len() as u128;
+    println!("score: {}/{}", correct, v.len());
+    println!("avg {}ms/attempt, total {}s", average_duration, session_start.elapsed().as_secs());
 }
