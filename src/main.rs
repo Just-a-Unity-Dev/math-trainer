@@ -4,6 +4,8 @@ use std::io::Write;
 use rand::Rng;
 use std::io;
 
+mod operator;
+
 fn main() {
     // set stats 
     let mut correct = 0;
@@ -12,7 +14,7 @@ fn main() {
     let mut rng = rand::thread_rng();
  
     // assign limits
-    let upper_limit = 25;
+    let upper_limit = 10;
     let lower_limit = 1;
 
     let mut v: Vec<Duration> = Vec::new();
@@ -25,9 +27,14 @@ fn main() {
         // assign left hand, right hand, and answer
         let left_hand = rng.gen_range(lower_limit..=upper_limit);
         let right_hand = rng.gen_range(lower_limit..=upper_limit);
-        let answer = left_hand + right_hand;
+        let operator: operator::Operator = rand::random();
 
-        print!("{} + {} = ", left_hand, right_hand);
+        let answer = match operator::operate(left_hand, right_hand, &operator) {
+            Ok(n) => n,
+            Err(_) => continue
+        };
+
+        print!("{} {} {} = ", left_hand, &operator.to_string(), right_hand);
         match io::stdout().flush() {
             Err(_) => break,
             Ok(_) => true
@@ -41,7 +48,7 @@ fn main() {
 
         // if the line is not a number, assume the player wnats to stop playing
         // break at this specific point because we havent recorded any data yet 
-        let guess: u32 = match guess.trim().parse() {
+        let guess: i32 = match guess.trim().parse() {
             Ok(num) => num,
             Err(_) => break
         };
