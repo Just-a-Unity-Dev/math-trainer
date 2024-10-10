@@ -2,6 +2,7 @@ use rand::{
     distributions::{Distribution, Standard},
     Rng
 };
+use std::fmt;
 
 pub enum Operator {
     ADD,
@@ -17,14 +18,16 @@ pub fn operate(left_hand: i32, right_hand: i32, operator: &Operator) -> Result<i
     }
 }
 
-impl ToString for Operator {
-    fn to_string(&self) -> String {
+impl fmt::Display for Operator {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         use Operator::*;
-        match self {
-            ADD => "+",
-            SUB => "-",
-            MUL => "*",
-        }.to_string()
+        write!(f, "{}", 
+            match self {
+                ADD => "+",
+                SUB => "-",
+                MUL => "*",
+            }.to_string()
+        )
     }
 }
 
