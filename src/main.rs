@@ -29,9 +29,8 @@ fn main() {
         let right_hand = rng.gen_range(lower_limit..=upper_limit);
         let operator: operator::Operator = rand::random();
 
-        let answer = match operator::operate(left_hand, right_hand, &operator) {
-            Ok(n) => n,
-            Err(_) => continue
+        let Ok(answer) = operator::operate(left_hand, right_hand, &operator) else {
+            continue;
         };
 
         print!("{} {} {} = ", left_hand, &operator.to_string(), right_hand);
