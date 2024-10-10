@@ -60,7 +60,13 @@ fn main() {
         // record attempt start
         v.push(attempt_start.elapsed());
     }
+    let total_answers = v.len();
     let average_duration: u128 = session_start.elapsed().as_millis() / v.len() as u128;
-    println!("score: {}/{}", correct, v.len());
+    let inner_message = match mistake {
+        0 => "perfect!".to_string(),
+        total_answers => format!("{} mistakes :( ", mistake),
+        _ => format!("{} mistakes", mistake)
+    };
+    println!("score: {}/{}: {}", correct, v.len(), inner_message);
     println!("avg {}ms/attempt, total {}s", average_duration, session_start.elapsed().as_secs());
 }
