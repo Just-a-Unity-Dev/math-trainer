@@ -38,6 +38,9 @@ fn main() {
         io::stdin()
             .read_line(&mut guess)
             .expect("failed to read line.");
+
+        // if the line is not a number, assume the player wnats to stop playing
+        // break at this specific point because we havent recorded any data yet 
         let guess: u32 = match guess.trim().parse() {
             Ok(num) => num,
             Err(_) => break
@@ -59,6 +62,7 @@ fn main() {
     }
     average_duration = average_duration / v.len() as u32;
 
-    println!("score: {}/{}", correct, correct + mistake);
+    let total = correct + mistake;
+    println!("score: {}/{}", correct, total);
     println!("average attempt lasted {} ms", average_duration);
 }
