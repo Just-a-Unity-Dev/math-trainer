@@ -1,11 +1,11 @@
 use std::io;
+use std::io::Write;
 use rand::Rng;
 use std::cmp::Ordering;
 
 fn main() {
     let mut rng = rand::thread_rng();
-    println!("guess numberr");
-    
+ 
     let upper_limit = 25;
     let lower_limit = 1;
 
@@ -13,7 +13,9 @@ fn main() {
     let right_hand = rng.gen_range(lower_limit..=upper_limit);
     let answer = left_hand + right_hand;
 
-    println!("{} + {} = ?", left_hand, right_hand);
+    print!("{} + {} = ", left_hand, right_hand);
+    io::stdout().flush();
+
     let mut guess = String::new();
     io::stdin()
         .read_line(&mut guess)
