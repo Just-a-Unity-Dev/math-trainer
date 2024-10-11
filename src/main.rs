@@ -67,7 +67,7 @@ fn main() {
     let inner_message = match mistake {
         0 => "perfect! :D".to_string(),
         total_answers => format!("{} mistake(s) :( ", mistake),
-        _ => format!("{} mistakes", mistake)
+        _ => format!("{} mistake(s)", mistake)
     };
     println!("score: {}/{}: {}", correct, v.len(), inner_message);
     println!("avg {}ms/correct attempt ({}ms/atmp)", average_duration_correct, average_duration);
