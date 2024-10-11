@@ -1,10 +1,12 @@
 use std::time::{Duration,Instant};
 use std::cmp::Ordering;
 use std::io::Write;
+use crate::answer::Answer;
 use rand::Rng;
 use std::io;
 
 mod operator;
+mod answer;
 
 fn main() {
     // set stats 
@@ -17,7 +19,7 @@ fn main() {
     let upper_limit = 10;
     let lower_limit = 1;
 
-    let mut v: Vec<Duration> = Vec::new();
+    let mut v: Vec<Answer> = Vec::new();
     let session_start = Instant::now();
 
     loop {
@@ -57,8 +59,18 @@ fn main() {
             Ordering::Equal => correct += 1,
             _ => mistake += 1
         }
+
         // record attempt start
-        v.push(attempt_start.elapsed());
+        let attempt = Answer {
+            left_hand: left_hand,
+            right_hand: right_hand,
+            operator: operator,
+            duration: attempt_start.elapsed(),
+            actual_answer: answer,
+            player_answer: guess
+        };
+
+        v.push(attempt);
     }
     let total_answers = v.len();
     let average_duration: u128 = session_start.elapsed().as_millis() / v.len() as u128;
